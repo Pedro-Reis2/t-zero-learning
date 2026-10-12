@@ -218,3 +218,4 @@ algorithms/dqn_solution.py
 *_solution.py
 
 docs/plans
+logs/

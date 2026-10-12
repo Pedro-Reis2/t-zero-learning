@@ -1,0 +1,43 @@
+# PPO — LunarLander-v3, FINAL config (Part 4).
+# Changes vs configs/ppo_lunarlander.yml (see the report for the reason of each):
+#   total_timesteps   1_000_000 -> 2_000_000
+#   ppo.gamma         0.99      -> 0.999
+#   ppo.gae_lambda    0.95      -> 0.98
+#   num_envs          4         -> 16
+#   ppo.num_steps     128       -> 1024
+#   ppo.num_minibatches 4       -> 256   (minibatch 128 -> 64)
+#
+#   python train.py --config ppo_lunarlander_tuned --override seed=2
+
+algorithm: ppo
+env_id: LunarLander-v3
+seed: 1
+cuda: false
+total_timesteps: 2000000
+num_envs: 16
+
+track: true
+capture_video: true
+save_model: true
+checkpoint_every: 0
+
+network: DiscreteActorCritic
+network_kwargs:
+  activation: Tanh
+  hidden_layers_size: 64
+
+ppo:
+  learning_rate: 2.5e-4
+  anneal_lr: true
+  num_steps: 1024
+  gamma: 0.999
+  gae_lambda: 0.98
+  num_minibatches: 256
+  update_epochs: 4
+  norm_adv: true
+  clip_coef: 0.2
+  clip_vloss: true
+  ent_coef: 0.01
+  vf_coef: 0.5
+  max_grad_norm: 0.5
+  target_kl: null

@@ -1,0 +1,34 @@
+# A2C — LunarLander-v3 (Part 5 of the PPO assignment: PPO vs A2C).
+# Starts from configs/a2c_cartpole.yml; changes:
+#   env_id            CartPole-v1 -> LunarLander-v3
+#   total_timesteps   500_000     -> 2_000_000   (same budget as the final PPO)
+#   num_envs          8           -> 16          (less noisy gradient per update)
+#   a2c.gamma         0.99        -> 0.995       (longer credit assignment for the landing bonus)
+#
+#   python train.py --config a2c_lunarlander --override seed=2
+
+algorithm: a2c
+env_id: LunarLander-v3
+seed: 1
+cuda: false
+total_timesteps: 2000000
+num_envs: 16
+
+track: true
+capture_video: true
+save_model: true
+checkpoint_every: 0
+
+network: DiscreteActorCritic
+network_kwargs:
+  activation: Tanh
+  hidden_layers_size: 64
+
+a2c:
+  learning_rate: 7.0e-4
+  num_steps: 5
+  gamma: 0.995
+  vf_coef: 0.5
+  ent_coef: 0.01
+  max_grad_norm: 0.5
+  use_baseline: true
